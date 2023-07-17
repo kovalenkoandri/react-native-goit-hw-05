@@ -1,7 +1,7 @@
 import React from 'react';
 import PostsScreen from './PostsScreen';
 import PostsScreenCompleted from './PostsScreenCompleted';
-import CreateScreen from './CreatePostsScreen';
+import CreatePostsScreen from './CreatePostsScreen';
 import CreatePostsScreenCompleted from './CreatePostsScreenCompleted';
 import ProfileScreen from './ProfileScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -45,7 +45,7 @@ const Home = ({ navigation }) => {
         }}
         name="Публикации"
         // component={PostsScreen}
-        component={PostsScreenCompleted}
+        component={PostsScreen}
       />
       <MainTab.Screen
         options={{
@@ -59,8 +59,7 @@ const Home = ({ navigation }) => {
           ),
         }}
         name="Создать публикацию"
-        // component={CreateScreen}
-        component={CreatePostsScreenCompleted}
+        component={CreatePostsScreen}
       />
       <MainTab.Screen
         options={{

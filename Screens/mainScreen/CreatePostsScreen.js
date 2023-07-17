@@ -2,15 +2,19 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import SvgLocationMark from '../../helpers/SvgLocationMark';
 import SvgCreatePhotoIcon from '../../helpers/SvgCreatePhotoIcon';
+import { Camera } from 'expo-camera';
 
 const CreatePostsScreen = ({ navigation }) => {
   return (
     <View style={styles.CreatePostsScreenContainer}>
-      <View style={styles.CreatePostsScreenLoadPhotoBg}>
-        <View style={styles.CreatePostsScreenLoadPhotoIconCircle}>
+      <Camera style={styles.CreatePostsScreenLoadPhotoBg}>
+        <TouchableOpacity
+          onPress={() => {}}
+          style={styles.CreatePostsScreenLoadPhotoIconCircle}
+        >
           <SvgCreatePhotoIcon />
-        </View>
-      </View>
+        </TouchableOpacity>
+      </Camera>
       <Text style={styles.CreatePostsScreenTextLoadPhoto}>Загрузите фото</Text>
       <Text style={styles.CreatePostsScreenPhotoName}>Название...</Text>
       <View style={styles.CreatePostsScreenWrapperLocation}>

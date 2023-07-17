@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   },
   PostsScreenUserName: {
     fontFamily: 'RobotoRegular',
-    fontStyle: 'Bold',
+    fontStyle: 'normal',
     fontSize: 13,
     lineHeight: 15,
     marginLeft: 8,
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   PostsScreenUserEmail: {
     fontFamily: 'RobotoRegular',
-    fontStyle: 'Regular',
+    fontStyle: 'normal',
     fontSize: 11,
     lineHeight: 13,
     marginLeft: 8,
