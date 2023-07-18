@@ -1,7 +1,15 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, FlatList } from 'react-native';
 
-const PostsScreen = () => {
+const PostsScreen = ({ route }) => {
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    if (route.params) {
+      setPosts((prevState) => [...prevState, route.params]);
+      console.log('route.params', route.params);
+      console.log('posts', posts);
+    }
+  }, [route.params]);
   return (
     <View style={styles.container}>
       <View style={styles.PostsScreenUserOuter}>
@@ -14,6 +22,24 @@ const PostsScreen = () => {
           <Text style={styles.PostsScreenUserEmail}>email@example.com</Text>
         </View>
       </View>
+      <FlatList
+        data={posts}
+        keyExtractor={(item, indx) => indx.toString()}
+        renderItem={({ item }) => (
+          <View
+            style={{
+              marginBottom: 10,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Image
+              source={{ uri: item.photo }}
+              style={{ width: 350, height: 200 }}
+            />
+          </View>
+        )}
+      />
     </View>
   );
 };
