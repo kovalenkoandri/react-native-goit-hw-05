@@ -1,83 +1,29 @@
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, FlatList } from 'react-native';
+import DefaultScreenPosts from '../nestedScreens/DefaultScreenPosts';
+import CommentsScreen from '../nestedScreens/CommentsScreen';
+import MapScreen from '../nestedScreens/MapScreen';
 
-const PostsScreen = ({ route }) => {
+const NestedScreen = createNativeStackNavigator();
+
+const PostsScreen = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     if (route.params) {
       setPosts((prevState) => [...prevState, route.params]);
-      console.log('route.params', route.params);
-      console.log('posts', posts);
+      console.log('route.params PostsScreen', route.params);
+      console.log('posts PostsScreen', posts);
     }
   }, [route.params]);
   return (
-    <View style={styles.container}>
-      <View style={styles.PostsScreenUserOuter}>
-        <Image
-          style={styles.PostsScreenUserPhoto}
-          source={require('../../assets/user.png')}
-        />
-        <View>
-          <Text style={styles.PostsScreenUserName}>Natali Romanova</Text>
-          <Text style={styles.PostsScreenUserEmail}>email@example.com</Text>
-        </View>
-      </View>
-      <FlatList
-        data={posts}
-        keyExtractor={(item, indx) => indx.toString()}
-        renderItem={({ item }) => (
-          <View
-            style={{
-              marginBottom: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Image
-              source={{ uri: item.photo }}
-              style={{ width: 350, height: 200 }}
-            />
-          </View>
-        )}
-      />
-    </View>
+    <NestedScreen.Navigator>
+      <NestedScreen.Screen name="DefaultScreen">
+        {() => <DefaultScreenPosts {...{ posts, navigation }} />}
+      </NestedScreen.Screen>
+      <NestedScreen.Screen name="Comments" component={CommentsScreen} />
+      <NestedScreen.Screen name="Map" component={MapScreen} />
+    </NestedScreen.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 16,
-    paddingTop: 32,
-    backgroundColor: '#fff',
-    height: '100%',
-    borderWidth: 1,
-    borderColor: 'rgba(0, 0, 0, 0.3)',
-  },
-  PostsScreenUserOuter: {
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  PostsScreenUserPhoto: {
-    width: 60,
-    height: 60,
-    resizeMode: 'cover',
-  },
-  PostsScreenUserName: {
-    fontFamily: 'RobotoRegular',
-    fontStyle: 'normal',
-    fontSize: 13,
-    lineHeight: 15,
-    marginLeft: 8,
-    color: '#212121',
-  },
-  PostsScreenUserEmail: {
-    fontFamily: 'RobotoRegular',
-    fontStyle: 'normal',
-    fontSize: 11,
-    lineHeight: 13,
-    marginLeft: 8,
-    color: '#212121CC',
-  },
-});
 
 export default PostsScreen;
