@@ -1,4 +1,3 @@
-import React from 'react';
 import PostsScreen from './PostsScreen';
 import PostsScreenCompleted from './PostsScreenCompleted';
 import CreatePostsScreen from './CreatePostsScreen';
@@ -22,17 +21,11 @@ import { HeaderBackButton } from '@react-navigation/elements';
 const MainTab = createBottomTabNavigator();
 
 const Home = ({ navigation }) => {
-  let focusFlag = false;
   return (
     <MainTab.Navigator screenOptions={{ tabBarShowLabel: false }}>
       <MainTab.Screen
         options={{
-          tabBarIcon: ({ focused, size, color }) => {
-            if (focused === true) {
-              focusFlag = true;
-            }
-            return <SvgPosts />;
-          },
+          tabBarIcon: () => <SvgPosts />,
           headerRight: () => (
             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
               <SvgLogout />
@@ -44,12 +37,12 @@ const Home = ({ navigation }) => {
           headerTitleAlign: 'center',
         }}
         name="Публикации"
-        // component={PostsScreen}
         component={PostsScreen}
       />
       <MainTab.Screen
         options={{
-          tabBarIcon: () => <SvgTrashBin />,
+          tabBarIcon: ({ focused }) =>
+            focused ? <SvgTrashBin /> : <SvgCreateFocused />,
           headerTitleAlign: 'center',
           headerLeft: () => (
             <HeaderBackButton
@@ -63,13 +56,7 @@ const Home = ({ navigation }) => {
       />
       <MainTab.Screen
         options={{
-          tabBarIcon: ({ focused, size, color }) => {
-            if (focused === true) {
-              focusFlag = false;
-              return <SvgProfileFocused />;
-            }
-            return <SvgProfileUnfocused />;
-          },
+          tabBarIcon: () => <SvgProfileUnfocused />,
           headerTitleAlign: 'center',
         }}
         name="Профиль"
