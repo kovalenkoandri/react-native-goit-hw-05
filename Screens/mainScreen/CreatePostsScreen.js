@@ -7,6 +7,7 @@ import {
   TextInput,
   Image,
   TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 import SvgLocationMark from '../../helpers/SvgLocationMark';
 import SvgCreatePhotoIcon from '../../helpers/SvgCreatePhotoIcon';
@@ -24,8 +25,8 @@ const CreatePostsScreen = ({ navigation }) => {
   const inputLocationHandler = (text) => setLocation(text);
   const [locationData, setLocationData] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [pressed, setPressed] = useState(false);
   const { keyboardHide, isShowKeyboard, setIsShowKeyboard } = ValidateInput();
-
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -51,10 +52,7 @@ const CreatePostsScreen = ({ navigation }) => {
     const photo = await camera.takePictureAsync();
     const locationCoords = await Location.getCurrentPositionAsync();
     setCoord(locationCoords);
-    // console.log('latitude', coord?.coords.latitude);
-    // console.log('longitude', coord?.coords.longitude);
     setPhoto(photo.uri);
-    console.log('photoPath', photo);
   };
 
   const sendPhoto = () => {
@@ -64,6 +62,8 @@ const CreatePostsScreen = ({ navigation }) => {
       location,
       coord,
     });
+    setPressed(false);
+    setPhoto(null);
   };
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
@@ -111,15 +111,27 @@ const CreatePostsScreen = ({ navigation }) => {
               />
               {/* <Text style={styles.CreatePostsScreenLocationName}>Местность...</Text> */}
             </View>
-            <TouchableOpacity
-              style={styles.CreatePostsScreenButtonPublish}
-              activeOpacity={0.8}
+            <Pressable
+              style={({ pressed }) => {
+                pressed && setPressed(true);
+                return [
+                  {
+                    backgroundColor: pressed ? '#FF6C00' : '#F6F6F6',
+                  },
+                  styles.CreatePostsScreenButtonPublish,
+                ];
+              }}
               onPress={sendPhoto}
             >
-              <Text style={styles.CreatePostsScreenTextPublish}>
+              <Text
+                style={{
+                  ...styles.CreatePostsScreenTextPublish,
+                  color: pressed ? '#FFF' : '#BDBDBD',
+                }}
+              >
                 Опубликовать
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -192,7 +204,7 @@ const styles = StyleSheet.create({
   },
   CreatePostsScreenButtonPublish: {
     borderRadius: 100,
-    backgroundColor: '#F6F6F6',
+    // backgroundColor: '#F6F6F6',
     alignItems: 'center',
     justifyContent: 'center',
     height: 51,
@@ -201,7 +213,7 @@ const styles = StyleSheet.create({
     fontFamily: 'RobotoRegular',
     fontSize: 16,
     lineHeight: 19,
-    color: '#BDBDBD',
+    // color: '#BDBDBD',
   },
 });
 
