@@ -74,22 +74,18 @@ const CreatePostsScreen = ({ navigation }) => {
         }}
       >
         <Camera style={styles.CreatePostsScreenLoadPhotoBg} ref={setCamera}>
-          <TouchableWithoutFeedback onPress={keyboardHide}>
-            <View style={styles.CreatePostsScreenWidthHeight}>
-              {photo && (
-                <Image
-                  source={{ uri: photo }}
-                  style={styles.CreatePostsScreenWidthHeight}
-                />
-              )}
-              <TouchableOpacity
-                onPress={takePhoto}
-                style={styles.CreatePostsScreenLoadPhotoIconCircle}
-              >
-                <SvgCreatePhotoIcon />
-              </TouchableOpacity>
-            </View>
-          </TouchableWithoutFeedback>
+          {photo && (
+            <Image
+              source={{ uri: photo }}
+              style={styles.CreatePostsScreenWidthHeight}
+            />
+          )}
+          <TouchableOpacity
+            onPress={takePhoto}
+            style={styles.CreatePostsScreenLoadPhotoIconCircle}
+          >
+            <SvgCreatePhotoIcon />
+          </TouchableOpacity>
         </Camera>
         <TouchableWithoutFeedback onPress={keyboardHide}>
           <View style={styles.CreatePostsScreenWidthHeight}>
