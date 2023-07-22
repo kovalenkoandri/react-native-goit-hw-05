@@ -6,21 +6,25 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import SvgLocationMark from '../../helpers/SvgLocationMark';
 import SvgCreatePhotoIcon from '../../helpers/SvgCreatePhotoIcon';
 import { Camera } from 'expo-camera';
 import * as Location from 'expo-location';
+import { ValidateInput } from '../../helpers/ValidateInput';
 
 const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
+  const [coord, setCoord] = useState(null);
   const inputTitleHandler = (text) => setTitle(text);
   const inputLocationHandler = (text) => setLocation(text);
   const [locationData, setLocationData] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const { keyboardHide, isShowKeyboard } = ValidateInput();
 
   useEffect(() => {
     (async () => {
@@ -43,13 +47,12 @@ const CreatePostsScreen = ({ navigation }) => {
     console.log('locationData ', text);
   }
 
-  let locationCoords;
-
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
-    locationCoords = await Location.getCurrentPositionAsync();
-    console.log('latitude', locationCoords.coords.latitude);
-    console.log('longitude', locationCoords.coords.longitude);
+    const locationCoords = await Location.getCurrentPositionAsync();
+    setCoord(locationCoords);
+    console.log('latitude', coord?.coords.latitude);
+    console.log('longitude', coord?.coords.longitude);
     setPhoto(photo.uri);
     console.log('photoPath', photo);
   };
@@ -59,53 +62,59 @@ const CreatePostsScreen = ({ navigation }) => {
       photo,
       title,
       location,
-      locationCoords,
+      coord,
     });
   };
   return (
-    <View style={styles.CreatePostsScreenContainer}>
-      <Camera style={styles.CreatePostsScreenLoadPhotoBg} ref={setCamera}>
-        {photo && (
-          <View>
-            <Image
-              source={{ uri: photo }}
-              style={{ height: 200, width: 200 }}
-            />
-          </View>
-        )}
-        <TouchableOpacity
-          onPress={takePhoto}
-          style={styles.CreatePostsScreenLoadPhotoIconCircle}
-        >
-          <SvgCreatePhotoIcon />
-        </TouchableOpacity>
-      </Camera>
-      <Text style={styles.CreatePostsScreenTextLoadPhoto}>Загрузите фото</Text>
-      {/* <Text style={styles.CreatePostsScreenPhotoName}>Название...</Text> */}
-      <TextInput
-        placeholder="Название..."
-        value={title}
-        onChangeText={inputTitleHandler}
-        style={styles.CreatePostsScreenPhotoName}
-      />
-      <View style={styles.CreatePostsScreenWrapperLocation}>
-        <SvgLocationMark />
+    <TouchableWithoutFeedback onPress={keyboardHide}>
+      <View style={styles.CreatePostsScreenContainer}>
+        <Camera style={styles.CreatePostsScreenLoadPhotoBg} ref={setCamera}>
+          <TouchableWithoutFeedback onPress={keyboardHide}>
+            <View style={styles.CreatePostsScreenImg}>
+              {photo && (
+                <Image
+                  source={{ uri: photo }}
+                  style={styles.CreatePostsScreenImg}
+                />
+              )}
+              <TouchableOpacity
+                onPress={takePhoto}
+                style={styles.CreatePostsScreenLoadPhotoIconCircle}
+              >
+                <SvgCreatePhotoIcon />
+              </TouchableOpacity>
+            </View>
+          </TouchableWithoutFeedback>
+        </Camera>
+        <Text style={styles.CreatePostsScreenTextLoadPhoto}>
+          Загрузите фото
+        </Text>
+        {/* <Text style={styles.CreatePostsScreenPhotoName}>Название...</Text> */}
         <TextInput
-          placeholder="Местность..."
-          value={location}
-          onChangeText={inputLocationHandler}
-          style={styles.CreatePostsScreenLocationName}
+          placeholder="Название..."
+          value={title}
+          onChangeText={inputTitleHandler}
+          style={styles.CreatePostsScreenPhotoName}
         />
-        {/* <Text style={styles.CreatePostsScreenLocationName}>Местность...</Text> */}
+        <View style={styles.CreatePostsScreenWrapperLocation}>
+          <SvgLocationMark />
+          <TextInput
+            placeholder="Местность..."
+            value={location}
+            onChangeText={inputLocationHandler}
+            style={styles.CreatePostsScreenLocationName}
+          />
+          {/* <Text style={styles.CreatePostsScreenLocationName}>Местность...</Text> */}
+        </View>
+        <TouchableOpacity
+          style={styles.CreatePostsScreenButtonPublish}
+          activeOpacity={0.8}
+          onPress={sendPhoto}
+        >
+          <Text style={styles.CreatePostsScreenTextPublish}>Опубликовать</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        style={styles.CreatePostsScreenButtonPublish}
-        activeOpacity={0.8}
-        onPress={sendPhoto}
-      >
-        <Text style={styles.CreatePostsScreenTextPublish}>Опубликовать</Text>
-      </TouchableOpacity>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -128,6 +137,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  CreatePostsScreenImg: { width: '100%', height: '100%' },
   CreatePostsScreenLoadPhotoIconCircle: {
     width: 60,
     height: 60,
@@ -135,6 +145,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginLeft: -30, // Half of the width
+    marginTop: -30, // Half of the height
   },
   CreatePostsScreenTextLoadPhoto: {
     fontFamily: 'RobotoRegular',

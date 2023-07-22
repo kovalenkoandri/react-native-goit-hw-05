@@ -15,7 +15,7 @@ export const ValidateInput = () => {
   const keyboardHide = ({ navigation }) => {
     Keyboard.dismiss();
     setIsShowKeyboard(false);
-    console.log(loginValue, emailValue, passwordValue);
+    // console.log(loginValue, emailValue, passwordValue);
     // setLoginValue('');
     // setEmailValue('');
     // setPasswordValue('');
