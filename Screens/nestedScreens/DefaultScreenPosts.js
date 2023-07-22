@@ -38,8 +38,8 @@ const DefaultScreenPosts = ({ posts, navigation }) => {
               source={{ uri: item.photo }}
               style={{ width: 350, height: 200 }}
             />
-            <Text style={styles.PostsScreenUserName}>coordinates latitude {item?.coord.latitude}</Text>
-            <Text style={styles.PostsScreenUserName}>coordinates longitude {item?.coord.longitude}</Text>
+            <Text style={styles.PostsScreenUserName}>coordinates latitude {item.coord?.latitude}</Text>
+            <Text style={styles.PostsScreenUserName}>coordinates longitude {item.coord?.longitude}</Text>
             <Text style={styles.PostsScreenUserName}>title {item?.title}</Text>
             <Text style={styles.PostsScreenUserName}>
               location {item?.location}

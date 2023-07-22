@@ -24,7 +24,7 @@ const CreatePostsScreen = ({ navigation }) => {
   const inputLocationHandler = (text) => setLocation(text);
   const [locationData, setLocationData] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-  const { keyboardHide, isShowKeyboard } = ValidateInput();
+  const { keyboardHide, isShowKeyboard, setIsShowKeyboard } = ValidateInput();
 
   useEffect(() => {
     (async () => {
@@ -44,15 +44,15 @@ const CreatePostsScreen = ({ navigation }) => {
     text = errorMsg;
   } else if (locationData) {
     text = JSON.stringify(locationData);
-    console.log('locationData ', text);
+    // console.log('locationData ', text);
   }
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
     const locationCoords = await Location.getCurrentPositionAsync();
     setCoord(locationCoords);
-    console.log('latitude', coord?.coords.latitude);
-    console.log('longitude', coord?.coords.longitude);
+    // console.log('latitude', coord?.coords.latitude);
+    // console.log('longitude', coord?.coords.longitude);
     setPhoto(photo.uri);
     console.log('photoPath', photo);
   };
@@ -67,7 +67,12 @@ const CreatePostsScreen = ({ navigation }) => {
   };
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
-      <View style={styles.CreatePostsScreenContainer}>
+      <View
+        style={{
+          ...styles.CreatePostsScreenContainer,
+          marginTop: isShowKeyboard ? -270 : 0,
+        }}
+      >
         <Camera style={styles.CreatePostsScreenLoadPhotoBg} ref={setCamera}>
           <TouchableWithoutFeedback onPress={keyboardHide}>
             <View style={styles.CreatePostsScreenImg}>
@@ -95,6 +100,7 @@ const CreatePostsScreen = ({ navigation }) => {
           value={title}
           onChangeText={inputTitleHandler}
           style={styles.CreatePostsScreenPhotoName}
+          onFocus={() => setIsShowKeyboard(true)}
         />
         <View style={styles.CreatePostsScreenWrapperLocation}>
           <SvgLocationMark />
