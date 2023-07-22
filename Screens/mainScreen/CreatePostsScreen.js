@@ -75,11 +75,11 @@ const CreatePostsScreen = ({ navigation }) => {
       >
         <Camera style={styles.CreatePostsScreenLoadPhotoBg} ref={setCamera}>
           <TouchableWithoutFeedback onPress={keyboardHide}>
-            <View style={styles.CreatePostsScreenImg}>
+            <View style={styles.CreatePostsScreenWidthHeight}>
               {photo && (
                 <Image
                   source={{ uri: photo }}
-                  style={styles.CreatePostsScreenImg}
+                  style={styles.CreatePostsScreenWidthHeight}
                 />
               )}
               <TouchableOpacity
@@ -91,34 +91,41 @@ const CreatePostsScreen = ({ navigation }) => {
             </View>
           </TouchableWithoutFeedback>
         </Camera>
-        <Text style={styles.CreatePostsScreenTextLoadPhoto}>
-          Загрузите фото
-        </Text>
-        {/* <Text style={styles.CreatePostsScreenPhotoName}>Название...</Text> */}
-        <TextInput
-          placeholder="Название..."
-          value={title}
-          onChangeText={inputTitleHandler}
-          style={styles.CreatePostsScreenPhotoName}
-          onFocus={() => setIsShowKeyboard(true)}
-        />
-        <View style={styles.CreatePostsScreenWrapperLocation}>
-          <SvgLocationMark />
-          <TextInput
-            placeholder="Местность..."
-            value={location}
-            onChangeText={inputLocationHandler}
-            style={styles.CreatePostsScreenLocationName}
-          />
-          {/* <Text style={styles.CreatePostsScreenLocationName}>Местность...</Text> */}
-        </View>
-        <TouchableOpacity
-          style={styles.CreatePostsScreenButtonPublish}
-          activeOpacity={0.8}
-          onPress={sendPhoto}
-        >
-          <Text style={styles.CreatePostsScreenTextPublish}>Опубликовать</Text>
-        </TouchableOpacity>
+        <TouchableWithoutFeedback onPress={keyboardHide}>
+          <View style={styles.CreatePostsScreenWidthHeight}>
+            <Text style={styles.CreatePostsScreenTextLoadPhoto}>
+              Загрузите фото
+            </Text>
+            {/* <Text style={styles.CreatePostsScreenPhotoName}>Название...</Text> */}
+            <TextInput
+              placeholder="Название..."
+              value={title}
+              onChangeText={inputTitleHandler}
+              style={styles.CreatePostsScreenPhotoName}
+              onFocus={() => setIsShowKeyboard(true)}
+            />
+            <View style={styles.CreatePostsScreenWrapperLocation}>
+              <SvgLocationMark />
+              <TextInput
+                placeholder="Местность..."
+                value={location}
+                onChangeText={inputLocationHandler}
+                style={styles.CreatePostsScreenLocationName}
+                onFocus={() => setIsShowKeyboard(true)}
+              />
+              {/* <Text style={styles.CreatePostsScreenLocationName}>Местность...</Text> */}
+            </View>
+            <TouchableOpacity
+              style={styles.CreatePostsScreenButtonPublish}
+              activeOpacity={0.8}
+              onPress={sendPhoto}
+            >
+              <Text style={styles.CreatePostsScreenTextPublish}>
+                Опубликовать
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -143,7 +150,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  CreatePostsScreenImg: { width: '100%', height: '100%' },
+  CreatePostsScreenWidthHeight: { width: '100%', height: '100%' },
   CreatePostsScreenLoadPhotoIconCircle: {
     width: 60,
     height: 60,
