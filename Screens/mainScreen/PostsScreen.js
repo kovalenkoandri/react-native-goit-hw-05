@@ -11,14 +11,12 @@ const PostsScreen = ({ route, navigation }) => {
   useEffect(() => {
     if (route.params) {
       setPosts((prevState) => [...prevState, route.params]);
-      console.log('route.params PostsScreen', route.params);
-      console.log('posts PostsScreen', posts);
     }
   }, [route.params]);
   return (
     <NestedScreen.Navigator>
       <NestedScreen.Screen name="DefaultScreen">
-        {() => <DefaultScreenPosts {...{ posts, navigation }} />}
+        {() => <DefaultScreenPosts {...{ posts, navigation, route }} />}
       </NestedScreen.Screen>
       <NestedScreen.Screen name="Comments" component={CommentsScreen} />
       <NestedScreen.Screen name="Map" component={MapScreen} />

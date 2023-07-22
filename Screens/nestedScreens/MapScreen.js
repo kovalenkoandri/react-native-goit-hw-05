@@ -2,31 +2,36 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
-const MapScreen = ({ item }) => (
-  <View style={styles.container}>
-    {item ? (
-      <MapView
-        style={styles.map}
-        initialRegion={{
-          latitude: item?.coord?.latitude,
-          longitude: item?.coord?.longitude,
-          latitudeDelta: 0.001,
-          longitudeDelta: 0.006,
-        }}
-      >
-        <Marker
-          coordinate={{
-            latitude: item?.coord?.latitude,
-            longitude: item?.coord?.longitude,
+const MapScreen = ({ route }) => {
+  
+  const latitude = route.params.route.params.coord.coords.latitude;
+  const longitude = route.params.route.params.coord.coords.longitude;
+  return (
+    <View style={styles.container}>
+      {route.params.route.params.coord.coords.latitude ? (
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude,
+            longitude,
+            latitudeDelta: 0.001,
+            longitudeDelta: 0.006,
           }}
-          title="travel photo"
-        />
-      </MapView>
-    ) : (
-      <Text>no coordinates</Text>
-    )}
-  </View>
-);
+        >
+          <Marker
+            coordinate={{
+              latitude,
+              longitude,
+            }}
+            title="travel photo"
+          />
+        </MapView>
+      ) : (
+        <Text>no coordinates</Text>
+      )}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

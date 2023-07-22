@@ -10,7 +10,10 @@ import {
 import SvgLocationMark from '../../helpers/SvgLocationMark';
 import SvgRemark from '../../helpers/SvgRemark';
 
-const DefaultScreenPosts = ({ posts, navigation }) => {
+const DefaultScreenPosts = ({ posts, navigation, route }) => {
+  const openCoordScreen = () => {
+    navigation.navigate('Map', { route });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.PostsScreenUserOuter}>
@@ -38,16 +41,17 @@ const DefaultScreenPosts = ({ posts, navigation }) => {
               source={{ uri: item.photo }}
               style={{ width: 350, height: 200 }}
             />
-            <Text style={styles.PostsScreenUserName}>coordinates latitude {item.coord?.latitude}</Text>
-            <Text style={styles.PostsScreenUserName}>coordinates longitude {item.coord?.longitude}</Text>
+            <Text style={styles.PostsScreenUserName}>
+              coordinates latitude {item.coord?.coords.latitude}
+            </Text>
+            <Text style={styles.PostsScreenUserName}>
+              coordinates longitude {item.coord?.coords.longitude}
+            </Text>
             <Text style={styles.PostsScreenUserName}>title {item?.title}</Text>
             <Text style={styles.PostsScreenUserName}>
               location {item?.location}
             </Text>
-            <TouchableOpacity
-              title="go to map"
-              onPress={() => navigation.navigate('Map', { item })}
-            >
+            <TouchableOpacity title="go to map" onPress={openCoordScreen}>
               <SvgLocationMark />
             </TouchableOpacity>
             <TouchableOpacity
